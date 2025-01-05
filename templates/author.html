@@ -10,7 +10,7 @@
     {% if author_avatar|lower|truncate(4, True, '') == "http" %}
       {% set selected_avatar = author_avatar %}
     {% elif author_avatar.startswith('/') %}
-      {% set selected_cover = SITEURL+author_avatar %}
+      {% set selected_author = SITEURL+author_avatar %}
     {% else %}
       {% set selected_avatar = SITEURL+"/"+author_avatar %}
     {% endif %}
