@@ -3162,7 +3162,7 @@ button,input,select,textarea {
 
 /* Hide github and linkedin in social icons for small screen */
 @media only screen and (max-width: 640px) {
-    .nav-meta li.nav-linkedin,.nav-meta li.nav-github li.nav-mastodon {
+    .nav-meta li.nav-linkedin,.nav-meta li.nav-github,.nav-meta li.nav-mastodon {
         display:none
     }
 }
