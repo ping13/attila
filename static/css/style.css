@@ -3166,3 +3166,8 @@ button,input,select,textarea {
         display:none
     }
 }
+
+/* 2025-01-05: this is to fix the missing vertical space in archives */
+.post.archives {
+    padding-top: calc(4rem + 2vw);    
+}
