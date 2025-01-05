@@ -262,7 +262,7 @@ td,th {
 .icon-reddit:before { content: '\e80f'; } /* '' */
 .icon-mail:before { content: '\e816'; } /* '' */
 .icon-instagram:before { content: '\f16d'; } /* '' */
-.icon-mastodon:before { content: '\e81a'; } /* manually added */
+.icon-mastodon:before { content: '\f647'; } /* U+F647 */
 
 @font-face {
     font-family: 'Libre Baskerville';
