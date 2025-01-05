@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ SITENAME }} - Archives{% endblock %}
+{% block title %}{{ SITENAME }} - Articles{% endblock %}
 
 
 <!-- 2025-01-05: I don't want a header image on the archive page -->
@@ -31,8 +31,8 @@
 {% if dates %}
 {% set body_class='archives-template' %}
 {% set current_url=ARCHIVES_URL %}
-{% set current_title=SITENAME+' - Archives' %}
-{% set current_display_title='Archives' %}
+{% set current_title=SITENAME+' - Articles' %}
+{% set current_display_title='Articles' %}
 {% endif %}
 
 {% block header %}

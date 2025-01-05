@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ SITENAME }} - Archives for {{ period | reverse | join (' ') }}{% endblock %}
+{% block title %}{{ SITENAME }} - Articles from {{ period | reverse | join (' ') }}{% endblock %}
 
 <!-- 2025-01-05: I don't want a header image on the archive page -->
 {% if HEADER_COVER %}
@@ -31,13 +31,13 @@
     <!-- Set your background image for this header on the line below. -->
     <header class="blog-header {% if selected_cover or selected_color %} has-cover {% endif %}">
       <div class="inner">
-        <h1 class="post-title">Archives for {{ period | reverse | join (' ') }}</h1>
+        <h1 class="post-title">Articles from {{ period | reverse | join (' ') }}</h1>
         {% if selected_cover %}
           <div class="post-cover cover">
             {% if "image_process" is plugin_enabled %}
-              <img class="image-process-large-photo" src="{{ selected_cover }}" alt="Archives for {{ period | reverse | join (' ') }}" />
+              <img class="image-process-large-photo" src="{{ selected_cover }}" alt="Articles from {{ period | reverse | join (' ') }}" />
             {% else %}
-              <img src="{{ selected_cover }}" alt="Archives for {{ period | reverse | join (' ') }}" />
+              <img src="{{ selected_cover }}" alt="Articles from {{ period | reverse | join (' ') }}" />
             {% endif %}
           </div>
         {% elif selected_color %}
