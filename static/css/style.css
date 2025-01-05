@@ -258,11 +258,11 @@ td,th {
 .icon-search:before { content: '\e80c'; } /* '' */
 .icon-linkedin:before { content: '\e80d'; } /* '' */
 .icon-github:before { content: '\e80e'; } /* '' */
-.icon-mastodon:before { content: '\e81a'; } 
 .icon-reddit:before { content: '\e80f'; } /* '' */
 .icon-mail:before { content: '\e816'; } /* '' */
 .icon-instagram:before { content: '\f16d'; } /* '' */
 .icon-mastodon:before { content: '\f647'; } /* U+F647 */
+.icon-bluesky:before { content: '\e571'; } 
 
 @font-face {
     font-family: 'Libre Baskerville';
@@ -2020,7 +2020,7 @@ button,input,select,textarea {
 }
 
 @media only screen and (max-width: 640px) {
-    .nav-meta li.nav-twitter,.nav-meta li.nav-facebook li.nav-mastodon {
+    .nav-meta li.nav-twitter,.nav-meta li.nav-facebook, .nav.meta li.nav-mastodon, .nav.meta li.nav-bluesky {
         display:none
     }
 }
@@ -2651,6 +2651,10 @@ button,input,select,textarea {
     background-color: #0E76A8
 }
 
+.post-share .bluesky {
+    background-color: #0E76A8
+}
+
 .post-share .email {
     background-color: #2997EE
 }
@@ -3162,7 +3166,7 @@ button,input,select,textarea {
 
 /* Hide github and linkedin in social icons for small screen */
 @media only screen and (max-width: 640px) {
-    .nav-meta li.nav-linkedin,.nav-meta li.nav-github,.nav-meta li.nav-mastodon {
+    .nav-meta li.nav-linkedin,.nav-meta li.nav-github,.nav-meta li.nav-mastodon, .nav-meta li.nav-bluesky {
         display:none
     }
 }
