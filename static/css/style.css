@@ -3175,3 +3175,25 @@ button,input,select,textarea {
 .post.archives {
     padding-top: calc(4rem + 2vw);    
 }
+
+
+.favourites-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.favourites-left {
+  flex: 1 1 100%; /* Default to 100% width */
+  padding-right: 0;
+}
+
+.favourites-right {
+  flex: 0 0 30%;
+  padding-left: 10px;
+}
+
+.favourites-container > .favourites-right + .favourites-left {
+  flex: 0 0 70%; /* Set to 70% only when .favourites-right exists */
+  padding-right: 10px;
+}

@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block title %}Recent Web Favorites{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    {% include 'partials/og.html' %}
+    {% include 'partials/jsonld.html' %}
+{% endblock %}
+
+{% if HEADER_COVER %}
+  {% if HEADER_COVER|lower|truncate(4, True, '') == "http" %}
+    {% set selected_cover = HEADER_COVER %}
+  {% elif HEADER_COVER.startswith('/') %}
+    {% set selected_cover = SITEURL+HEADER_COVER %}
+  {% else %}
+    {% set selected_cover = SITEURL+"/"+HEADER_COVER %}
+  {% endif %}
+{% elif HOME_COVER %}
+  {% if HOME_COVER|lower|truncate(4, True, '') == "http" %}
+    {% set selected_cover = HOME_COVER %}
+  {% elif HOME_COVER.startswith('/') %}
+    {% set selected_cover = SITEURL+HOME_COVER %}
+  {% else %}
+    {% set selected_cover = SITEURL+"/"+HOME_COVER %}
+  {% endif %}
+{% elif HEADER_COLOR %}
+  {% set selected_color = HEADER_COLOR %}
+{% elif HOME_COLOR %}
+  {% set selected_color = HOME_COLOR %}
+{% endif %}
+
+{% block header %}
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="blog-header {% if selected_cover or selected_color %} has-cover {% endif %}">
+      <div class="inner">
+        <div class="box blog-box">
+          <h1 class="blog-name">Recent Web Favorites</h1>
+          {% if SITESUBTITLE %}
+          <span class="blog-description">{{ SITESUBTITLE }}</span>
+          {% endif %}
+        </div>
+
+        {% if selected_cover %}
+          <div class="blog-cover cover">
+            {% if "image_process" is plugin_enabled %}
+              <img class="image-process-large-photo" src="{{ selected_cover }}" alt="{{ current_title }}" />
+            {% else %}
+              <img src="{{ selected_cover }}" alt="{{ current_title }}" />
+            {% endif %}
+          </div>
+        {% elif selected_color %}
+          <div class="blog-cover cover" style="background-color: {{ selected_color }}">
+        {% endif %}
+      </div>
+    </header>
+
+{% endblock header %}
+
+    
+    {% block content %}
+<div id="index" class="container">
+  <main class="content" role="main">
+    <article class="post archives">
+      <div class="inner">
+        <section class="post-content">
+          <div class="inner">
+            This page showcases my recent favorites, accumulated through my use
+            of the <a href="https://linkding.link">bookmark manager</a> or when
+            marking favorites on Mastodon. I
+            utilize <a href="https://github.com/ping13/star-collector">Star
+            Collector</a> for this purpose. If you're really interested, you
+            can subscribe
+            via <span class="icon-rss"></span><a href="https://rss.ping13.net/stars.rss">RSS</a>.
+          </div>
+        </section>
+
+      </div>
+    </article>        
+
+    <article class="post archives">
+      <div class="inner">
+        
+        {% if WEBRING_FEED_URLS %}
+        <!-- feeds are configured: '{{ WEBRING_FEED_URLS }}' -->
+        {% for article in webring_articles %}
+        <hr/>
+        <section class="post-content">
+          <div class="favourites-container">
+            <div class="favourites-left">
+              <span>{{ article.date|strftime('%Y-%m-%d') }}</span>
+              <h4 class="archive-title">{{ article.title }}</h4>
+              <span><a href="{{ article.link }}">Link</a>, source: <a href="{{article.source.link}}">{{ article.source.title }}</a></span><br/>
+              <i><small>{{ article.summary }}</small></i><br/>
+              <span>#{{ article.tags | map(attribute='term') | join(', #') }} 
+            </div>
+            {% if article.enclosures %}
+            <div class="favourites-right">
+              {% for enclosure in article.enclosures %}
+              {% if enclosure.type.startswith("image/") or enclosure.type.startswith("gifv/") %} 
+              <span><img src="{{ enclosure.href }}"></span>
+              {% elif enclosure.type.startswith("video/") %}
+              <video controls>
+                <source src="{{enclosure.href }}" type="video/*">
+                Your browser does not support the video tag.
+              </video>
+              {% elif enclosure.type.startswith("text/html") %}
+              {% set og_data = enclosure.href | fetch_og_tags %}
+              <div class="preview">
+                <a href="{{ enclosure.href }}"><h2>{{ og_data.title }}</h2>
+                  <p>{{ og_data.description }}</p>
+                  <img src="{{ og_data.image }}" alt="{{ og_data.title }}">
+                </a>
+              </div>
+              {% else %}
+              <span>
+                <a href="{{ enclosure.href }}">Media
+                  <code>({{enclosure.type}})</code>
+              </a></span>
+              {% endif %} 
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+        </section>
+        {% endfor %}
+        {% else %}
+        <section class="post-content">
+          No feeds are configured: '{{ WEBRING_FEED_URLS }}'
+        </section>                
+        {% endif %}
+      </div>
+    </article>
+  </main>
+</div>
+{% endblock %}
