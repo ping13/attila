@@ -89,10 +89,9 @@
           <div class="favourites-container">
             <div class="favourites-left">
               <span>{{ article.date|strftime('%Y-%m-%d') }}</span>
-              <h4 class="archive-title">{{ article.title }}</h4>
-              <span><a href="{{ article.link }}">Link</a>, source: <a href="{{article.source.link}}">{{ article.source.title }}</a></span><br/>
+              <h4 class="archive-title"><a href="{{ article.link }}">{{ article.title }}</a></h4>
+              <span>#{{ article.tags | map(attribute='term') | join(', #') }} (source: <a href="{{article.source.link}}">{{ article.source.title }}</a>)</span><br/>
               <i><small>{{ article.summary }}</small></i><br/>
-              <span>#{{ article.tags | map(attribute='term') | join(', #') }} 
             </div>
             {% if article.enclosures %}
             <div class="favourites-right">
@@ -104,19 +103,9 @@
                 <source src="{{enclosure.href }}" type="video/*">
                 Your browser does not support the video tag.
               </video>
-              {% elif enclosure.type.startswith("text/html") %}
-              {% set og_data = enclosure.href | fetch_og_tags %}
-              <div class="preview">
-                <a href="{{ enclosure.href }}"><h2>{{ og_data.title }}</h2>
-                  <p>{{ og_data.description }}</p>
-                  <img src="{{ og_data.image }}" alt="{{ og_data.title }}">
-                </a>
-              </div>
               {% else %}
               <span>
-                <a href="{{ enclosure.href }}">Media
-                  <code>({{enclosure.type}})</code>
-              </a></span>
+                <a href="{{ enclosure.href }}">Link</a></span>
               {% endif %} 
               {% endfor %}
             </div>
