@@ -1268,7 +1268,7 @@ button,input,select,textarea {
     left: 0;
     top: 0;
     z-index: 5;
-    background: no-repeat scroll center center / cover #000;
+    background: no-repeat scroll center center / cover var(--color-background-main);
     animation: 0.5s ease-in forwards fadein;
     display: flex;
     align-items: center
@@ -2342,7 +2342,7 @@ button,input,select,textarea {
     left: 0;
     top: 0;
     z-index: 5;
-    background: no-repeat scroll center center / cover #000;
+    background: no-repeat scroll center center / cover var(--color-background-main);
     animation: 0.5s ease-in forwards fadein;
     display: flex;
     align-items: center
