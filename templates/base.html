@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="{{ DEFAULT_LANG|default('en') }}">
-
 <head>
   {% block head %}
   <meta charset="utf-8">
@@ -74,7 +73,11 @@
 
   <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/css/style.css">
   <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/css/code.css">
-
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"
+    />
+  
   {% if CSS_OVERRIDE %}
   <!-- CSS specified by the user -->
   {% for css in CSS_OVERRIDE %}
@@ -245,7 +248,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
   <script type="text/javascript" src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/js/local.js"></script>
   <script type="text/javascript" src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/js/script.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
   {% if JS_OVERRIDE %}
   <!-- Script specified by the user -->
   {% for js in JS_OVERRIDE %}
@@ -261,7 +264,12 @@
   {% endif %}
   {% include 'partials/analytics.js' %}
   {% include 'partials/disqus.js' %}
-
+  <script type="text/javascript">
+    Fancybox.bind("[data-fancybox]", {
+        // Your custom options
+    });
+  </script>
+  
   <!-- 	The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in article.html, but it needs to be included down here, after jQuery has already loaded. -->
   {% block scripts %}{% endblock scripts %}
 </body>

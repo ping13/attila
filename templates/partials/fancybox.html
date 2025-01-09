@@ -1,0 +1,5 @@
+{% macro fancybox(src, id='image', title='') -%}
+<a href="{{ src }}" data-fancybox="{{ id }}" data-caption="{{ title }}">
+  <img src="{{ src }}" />
+</a>
+{%- endmacro %}
