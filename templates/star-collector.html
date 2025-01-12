@@ -93,7 +93,7 @@
               <h4 class="archive-title"><a href="{{ article.link }}">
                   {{ article.title if article.title else 'Link' }}
               </a></h4>
-              <span>#{{ article.tags | map(attribute='term') | join(', #') }} (source: <a href="{{article.source.link}}">{{ article.source.title }}</a>)</span><br/>
+              <span>#{{ article.tags | map(attribute='term') | join(', #') }} (source: <a href="{{article.source.href}}">{{ article.source.title }}</a>)</span><br/>
               <i><small>{{ article.summary }}</small></i><br/>
             </div>
             {% if article.enclosures %}

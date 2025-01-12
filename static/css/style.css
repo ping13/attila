@@ -1476,7 +1476,7 @@ button,input,select,textarea {
 
 @media only screen and (max-width: 640px) {
     .inner {
-        padding:0 1rem
+        padding:0 2rem
     }
 }
 
