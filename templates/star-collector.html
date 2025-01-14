@@ -79,55 +79,161 @@
       </div>
     </article>        
 
-    <article class="post archives">
+    <article class="post">
       <div class="inner">
-  
+
+
         {% if WEBRING_FEED_URLS %}
-        <!-- feeds are configured: '{{ WEBRING_FEED_URLS }}' -->
-        {% for article in webring_articles %}
-        <hr/>
-        <section class="post-content">
-          <div class="favourites-container">
-            <div class="favourites-left">
-              <span>{{ article.date|strftime('%Y-%m-%d') }}</span>
-              <h4 class="archive-title"><a href="{{ article.link }}">
-                  {{ article.title if article.title else 'Link' }}
-              </a></h4>
-              <span>#{{ article.tags | map(attribute='term') | join(', #') }} (source: <a href="{{article.source.href}}">{{ article.source.title }}</a>)</span><br/>
-              <i><small>{{ article.summary }}</small></i><br/>
-            </div>
-            {% if article.enclosures %}
-            <div class="favourites-right">
-              {% for enclosure in article.enclosures %}
-              {% if enclosure.type.startswith("image/") or enclosure.type.startswith("gifv/") %} 
-              <span><a href="{{ enclosure.href }}"
+        <article class="post">
+          <div class="inner">
+            
+            <section class="">
+
+              <div class="startags-filter">
+                <h3 style="margin-bottom: 1rem;">Filter by tag:</h3>
+                <div class="startags-list">
+                  {# Tags will be inserted here by JavaScript #}
+                </div>
+              </div>
+            </section>
+
+            {% for article in webring_articles %}
+            <hr/>
+            <section class="post-content star-content">
+              <div class="favourites-container">
+                <div class="favourites-left">
+                  <span>{{ article.date|strftime('%Y-%m-%d') }}</span>
+                  <h4 class="archive-title">
+                    <a href="{{ article.link }}">{{ article.title if article.title else 'Link' }}</a>
+                  </h4>
+                  <span>
+                    {% for tag in article.tags %}
+                    <span class="article-tag" data-tag="{{ tag.term }}">#{{ tag.term }}</span>
+                    {% endfor %}
+                    (source: <a href="{{article.source.href}}">{{ article.source.title }}</a>)
+                  </span><br/>
+                  <i><small>{{ article.summary }}</small></i><br/>
+                </div>
+                
+                {% if article.enclosures %}
+                <div class="favourites-right">
+                  {% for enclosure in article.enclosures %}
+                  {% if enclosure.type.startswith("image/") or enclosure.type.startswith("gifv/") %} 
+                  <span>
+                    <a href="{{ enclosure.href }}"
                        data-fancybox="favorites"
-                       data-caption="{{ article.title }} (source: {{ article.source.title }})"
-                       >
-                  <img src="{{ enclosure.href }}"></a>
-              </span>
-              {% elif enclosure.type.startswith("video/") %}
-              <video controls>
-                <source src="{{enclosure.href }}" type="video/*">
-                Your browser does not support the video tag.
-              </video>
-              {% else %}
-              <span>
-                <a href="{{ enclosure.href }}">Link to attachment</a></span>
-              {% endif %} 
-              {% endfor %}
-            </div>
-            {% endif %}
+                       data-caption="{{ article.title }} (source: {{ article.source.title }})">
+                      <img src="{{ enclosure.href }}">
+                    </a>
+                  </span>
+                  {% elif enclosure.type.startswith("video/") %}
+                  <video controls>
+                    <source src="{{enclosure.href }}" type="video/*">
+                    Your browser does not support the video tag.
+                  </video>
+                  {% else %}
+                  <span><a href="{{ enclosure.href }}">Link to attachment</a></span>
+                  {% endif %} 
+                  {% endfor %}
+                </div>
+                {% endif %}
+              </div>
+            </section>
+            {% endfor %}
           </div>
-        </section>
-        {% endfor %}
+        </article>
         {% else %}
         <section class="post-content">
           No feeds are configured: '{{ WEBRING_FEED_URLS }}'
         </section>                
         {% endif %}
+        
       </div>
     </article>
   </main>
 </div>
 {% endblock %}
+
+{% block scripts %}
+{% if WEBRING_FEED_URLS %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all article elements
+    const articles = document.querySelectorAll('.star-content');
+    
+    // Extract unique tags and count occurrences
+    const tagCounts = {};
+    articles.forEach(article => {
+        const tagSpans = article.querySelectorAll('.article-tag');
+        tagSpans.forEach(span => {
+            const tag = span.dataset.tag;
+            tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+        });
+    });
+
+    // Find the startags-list container and populate it
+    const tagsList = document.querySelector('.startags-list');
+    if (tagsList) {
+        const tagButtons = Object.entries(tagCounts)
+            .sort(([tagA, countA], [tagB, countB]) => {
+                // First sort by count (descending)
+                if (countB !== countA) {
+                    return countB - countA;
+                }
+                // If counts are equal, sort alphabetically
+                return tagA.localeCompare(tagB);
+            })
+            .map(([tag, count]) => `
+                <button class="startags-button" data-tag="${tag}">
+                    ${tag} <span class="startags-count">(${count})</span>
+                </button>
+            `).join('');
+        tagsList.innerHTML = tagButtons;
+    }
+
+    // Add click handlers to tag buttons
+    const tagButtons = document.querySelectorAll('.startags-button');
+    tagButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const selectedTag = button.dataset.tag;
+            
+            // Toggle active state of buttons
+            tagButtons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // If clicking the same tag again, show all articles
+            if (button.classList.contains('was-active')) {
+                button.classList.remove('was-active');
+                articles.forEach(article => {
+                    article.style.display = 'block';
+                    const hr = article.previousElementSibling;
+                    if (hr && hr.tagName === 'HR') {
+                        hr.style.display = 'block';
+                    }
+                });
+                return;
+            }
+            
+            // Mark this button as active
+            button.classList.add('active');
+            button.classList.add('was-active');
+            
+            // Filter articles
+            articles.forEach(article => {
+                const hasTag = Array.from(article.querySelectorAll('.article-tag'))
+                    .some(tag => tag.dataset.tag === selectedTag);
+                
+                article.style.display = hasTag ? 'block' : 'none';
+                
+                const hr = article.previousElementSibling;
+                if (hr && hr.tagName === 'HR') {
+                    hr.style.display = hasTag ? 'block' : 'none';
+                }
+            });
+        });
+    });
+});
+</script>
+{% endif %}
+{% endblock scripts %}
