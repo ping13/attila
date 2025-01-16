@@ -3276,3 +3276,8 @@ button,input,select,textarea {
     color: #005bb5;
 }
 
+
+/* fancybox options, see https://fancyapps.com */
+.fancybox__caption {
+  font-size: 18px;
+}
