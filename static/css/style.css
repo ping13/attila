@@ -3195,6 +3195,13 @@ button,input,select,textarea {
   padding-right: 0;
 }
 
+.favourites-summary {
+    line-height: 1.5em !important;
+    display: inline-block !important;
+    min-height: 1.5em !important;
+    height: fit-content !important;
+}
+
 .favourites-right {
   flex: 0 0 30%;
   padding-left: 10px;
