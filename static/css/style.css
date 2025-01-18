@@ -3281,3 +3281,23 @@ button,input,select,textarea {
 .fancybox__caption {
   font-size: 18px;
 }
+
+/* draft banner */
+.draft-banner {
+    font-size: 24px;
+  position: fixed;
+  top: 15px;      /* Adjusted from -10px */
+  right: -65px;   /* Adjusted from -50px */
+  width: 200px;
+  background: var(--color-primary);
+  text-align: center;
+  line-height: 25px;  /* Reduced from 40px */
+  letter-spacing: 1px;
+  color: white;
+  font-weight: bold;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  padding: 5px 0;  /* Added padding */
+}

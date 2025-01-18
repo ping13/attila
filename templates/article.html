@@ -66,6 +66,10 @@
       <span class="progress-bar"></span>
     </div>
 
+    {% if article.status == "draft" %}
+    <div class="draft-banner">DRAFT</div>
+    {% endif %}   
+    
     <!-- Page Header -->
     <!-- Set your background image for this header on the line below. -->
     <header class="post-header {% if selected_cover or selected_color %} has-cover {% endif %}">
