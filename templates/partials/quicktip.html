@@ -1,0 +1,16 @@
+{% macro quicktip(title, image_url, content) -%}
+<div class="quick-tip-container">
+    <div class="quick-tip-header">
+        <div class="quick-tip-left">
+            <span class="quick-tip-arrow">⤴</span>
+            <span class="quick-tip-label">Quicktip: {{ title }}</span>
+        </div>
+        <div class="quick-tip-right">
+            <span class="quick-tip-image"><img src="{{ image_url }}"></span>
+        </div>
+    </div>
+    <div class="quick-tip-content">
+        {{ content | markdown | safe }}
+    </div>
+</div>
+{%- endmacro %}

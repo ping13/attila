@@ -3309,3 +3309,59 @@ button,input,select,textarea {
 .simple-footnotes li {
     font-size: small;
 }
+
+
+/* Quick tip */
+.quick-tip-container {
+    background: #f8f9fa;
+    border-left: 4px solid var(--color-primary);
+    border-radius: 4px;
+    padding: 20px;
+    margin: 25px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.quick-tip-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.quick-tip-left {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.quick-tip-right {
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+}
+
+.quick-tip-arrow {
+    font-size: 24px;
+    color: var(--color-primary);
+    margin-right: 10px;
+}
+
+.quick-tip-label {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--color-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.quick-tip-image img {
+    height: 40px;
+    width: auto;
+    display: block;
+}
+
+.quick-tip-content {
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: #2c3e50;
+}

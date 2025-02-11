@@ -3,3 +3,13 @@
   <img src="{{ src }}" />
 </a>
 {%- endmacro %}
+
+{% macro fancyboxes(images, gap='20px', justify='center') -%}
+<div style="display: flex; gap: {{ gap }}; justify-content: {{ justify }}; width: 100%;">
+  {% for image in images %}
+    <a href="{{ image.src }}" data-fancybox="{{ image.id }}" data-caption="{{ image.title }}">
+      <img src="{{ image.src }}" />
+    </a>
+  {% endfor %}
+</div>
+{%- endmacro %}
