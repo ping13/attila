@@ -4,11 +4,12 @@
 </a>
 {%- endmacro %}
 
-{% macro fancyboxes(images, gap='20px', justify='center') -%}
-<div style="display: flex; gap: {{ gap }}; justify-content: {{ justify }}; width: 100%;">
+
+{% macro fancyboxes(images, id='image', gap='20px', justify='center') -%}
+<div style="display: flex; gap: {{ gap }}; justify-content: {{ justify }}; width: 100%; max-width: 1200px; margin: 0 auto;">
   {% for image in images %}
-    <a href="{{ image.src }}" data-fancybox="{{ image.id }}" data-caption="{{ image.title }}">
-      <img src="{{ image.src }}" />
+    <a href="{{ image[0] }}" data-fancybox="{{ id }}" data-caption="{{ image[1] }}" style="flex: 1; display: flex;">
+      <img src="{{ image[0] }}" style="max-width: 100%; height: auto; object-fit: contain;" />
     </a>
   {% endfor %}
 </div>
