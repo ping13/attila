@@ -17,19 +17,18 @@ jQuery(function($) {
           tooltip.className = 'footnote-tooltip';
           tooltip.innerHTML = footnote.innerHTML;
 
-          // Position the tooltip
           let left = rect.left;
-          let top = rect.bottom + 5; // Add a small gap below the footnote
+          let top = rect.bottom + 5;
 
-          // Adjust if tooltip overflows the viewport
-          const tooltipWidth = 300; // Max width of the tooltip
+          const tooltipWidth = 300; 
           const tooltipHeight = tooltip.offsetHeight;
           if (left + tooltipWidth > window.innerWidth) {
-            left = window.innerWidth - tooltipWidth - 10; // Move left to fit
+            left = window.innerWidth - tooltipWidth - 10; 
           }
           if (top + tooltipHeight > window.innerHeight) {
-            top = rect.top - tooltipHeight - 5; // Move above the footnote
+            top = rect.top - tooltipHeight - 5; 
           }
+
 
           tooltip.style.position = 'fixed';
           tooltip.style.left = `${left}px`;
@@ -187,4 +186,4 @@ jQuery(function($) {
   }
   theme();
 });
-});
+
