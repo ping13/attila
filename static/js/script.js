@@ -9,7 +9,7 @@ jQuery(function($) {
 
     footnotes.forEach(fn => {
       fn.addEventListener('mouseenter', function(e) {
-        const targetId = this.getAttribute('href');
+        const targetId = this.getAttribute('href').replace(':', '\\:');
         const footnote = document.querySelector(targetId);
         if (footnote) {
           const rect = this.getBoundingClientRect();
