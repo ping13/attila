@@ -3,6 +3,30 @@ jQuery(function($) {
   var html = $('html');
   var viewport = $(window);
 
+  function footnoteHover() {
+    $('.footnote-ref').each(function() {
+      var $footnoteRef = $(this);
+      var footnoteId = $footnoteRef.attr('href');
+      var $footnote = $(footnoteId);
+      var footnoteContent = $footnote.html();
+      
+      if (footnoteContent) {
+        // Remove the back arrow link from tooltip
+        footnoteContent = footnoteContent.replace(/<a\s+href="#[^"]*"\s+class="footnote-back">↩<\/a>/, '');
+        
+        $footnoteRef.tooltip({
+          title: footnoteContent,
+          html: true,
+          placement: 'top',
+          trigger: 'hover',
+          template: '<div class="tooltip footnote-tooltip" role="tooltip"><div class="tooltip-inner"></div></div>'
+        });
+      }
+    });
+  }
+
+  footnoteHover();
+
 /* ==========================================================================
    Menu
    ========================================================================== */

@@ -3365,3 +3365,15 @@ button,input,select,textarea {
     line-height: 1.6;
     color: #2c3e50;
 }
+
+.footnote-tooltip {
+    max-width: 300px;
+    font-size: 0.9em;
+    line-height: 1.4;
+    background-color: var(--color-background-main);
+    border: 1px solid var(--color-background-contrast);
+    border-radius: 4px;
+    padding: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
