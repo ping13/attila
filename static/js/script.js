@@ -187,3 +187,4 @@ jQuery(function($) {
   }
   theme();
 });
+});
