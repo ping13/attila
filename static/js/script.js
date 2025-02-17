@@ -16,15 +16,24 @@ jQuery(function($) {
           const tooltip = document.createElement('div');
           tooltip.className = 'footnote-tooltip';
           tooltip.innerHTML = footnote.innerHTML;
+
+          // Position the tooltip
+          let left = rect.left;
+          let top = rect.bottom + 5; // Add a small gap below the footnote
+
+          // Adjust if tooltip overflows the viewport
+          const tooltipWidth = 300; // Max width of the tooltip
+          const tooltipHeight = tooltip.offsetHeight;
+          if (left + tooltipWidth > window.innerWidth) {
+            left = window.innerWidth - tooltipWidth - 10; // Move left to fit
+          }
+          if (top + tooltipHeight > window.innerHeight) {
+            top = rect.top - tooltipHeight - 5; // Move above the footnote
+          }
+
           tooltip.style.position = 'fixed';
-          tooltip.style.left = `${rect.left}px`;
-          tooltip.style.top = `${rect.bottom}px`;
-          tooltip.style.zIndex = 1000;
-          tooltip.style.backgroundColor = 'white';
-          tooltip.style.padding = '5px';
-          tooltip.style.border = '1px solid #ccc';
-          tooltip.style.borderRadius = '3px';
-          tooltip.style.boxShadow = '2px 2px 5px rgba(0,0,0,0.1)';
+          tooltip.style.left = `${left}px`;
+          tooltip.style.top = `${top}px`;
           document.body.appendChild(tooltip);
         }
       });
