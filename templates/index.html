@@ -98,7 +98,7 @@
             <h2 class="archive-title">Recent articles</h2>
             
             <ul>
-              {% for article in (recent_articles|list)[:3] %}
+              {% for article in (recent_articles|list)[:5] %}
               <li><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></li>
               {% endfor %}
             </ul>
