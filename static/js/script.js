@@ -4,24 +4,37 @@ jQuery(function($) {
   var viewport = $(window);
 
   function footnoteHover() {
-    $('.footnote-ref').each(function() {
-      var $footnoteRef = $(this);
-      var footnoteId = $footnoteRef.attr('href');
-      var $footnote = $(footnoteId);
-      var footnoteContent = $footnote.html();
-      
-      if (footnoteContent) {
-        // Remove the back arrow link from tooltip
-        footnoteContent = footnoteContent.replace(/<a\s+href="#[^"]*"\s+class="footnote-back">↩<\/a>/, '');
-        
-        $footnoteRef.tooltip({
-          title: footnoteContent,
-          html: true,
-          placement: 'top',
-          trigger: 'hover',
-          template: '<div class="tooltip footnote-tooltip" role="tooltip"><div class="tooltip-inner"></div></div>'
-        });
-      }
+    'use strict';
+    const footnotes = document.querySelectorAll('a.footnote-ref');
+
+    footnotes.forEach(fn => {
+      fn.addEventListener('mouseenter', function(e) {
+        const targetId = this.getAttribute('href');
+        const footnote = document.querySelector(targetId);
+        if (footnote) {
+          const rect = this.getBoundingClientRect();
+          const tooltip = document.createElement('div');
+          tooltip.className = 'footnote-tooltip';
+          tooltip.innerHTML = footnote.innerHTML;
+          tooltip.style.position = 'fixed';
+          tooltip.style.left = `${rect.left}px`;
+          tooltip.style.top = `${rect.bottom}px`;
+          tooltip.style.zIndex = 1000;
+          tooltip.style.backgroundColor = 'white';
+          tooltip.style.padding = '5px';
+          tooltip.style.border = '1px solid #ccc';
+          tooltip.style.borderRadius = '3px';
+          tooltip.style.boxShadow = '2px 2px 5px rgba(0,0,0,0.1)';
+          document.body.appendChild(tooltip);
+        }
+      });
+
+      fn.addEventListener('mouseleave', function() {
+        const tooltip = document.querySelector('.footnote-tooltip');
+        if (tooltip) {
+          tooltip.remove();
+        }
+      });
     });
   }
 
