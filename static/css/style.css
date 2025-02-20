@@ -3178,7 +3178,7 @@ button,input,select,textarea {
 
 /* 2025-01-05: this is to fix the missing vertical space in archives */
 .post.archives {
-    padding-top: calc(4rem + 2vw);    
+    padding-top: calc(2rem + 2vw);    
 }
 
 
@@ -3310,6 +3310,16 @@ button,input,select,textarea {
     font-size: small;
 }
 
+.footnote {
+    margin-top: 4em !important;
+    line-height: 2; /
+}
+
+.footnote li {
+    font-size: small;
+    line-height: 2; /
+}
+
 
 /* Quick tip */
 .quick-tip-container {
@@ -3379,4 +3389,8 @@ button,input,select,textarea {
     font-family: var(--font-secondary);
     color: var(--color-content-main);
     transition: opacity 0.2s ease-in-out;
+}
+
+.archive-description a {
+    color: var(--color-primary);
 }
