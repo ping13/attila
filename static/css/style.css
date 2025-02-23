@@ -3395,6 +3395,32 @@ button,input,select,textarea {
     color: var(--color-primary);
 }
 
+/* Copy button styling */
+.copy-button {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    padding: 4px 8px;
+    background: var(--color-background-contrast);
+    color: var(--color-content-main);
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.8em;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.copy-button:hover {
+    opacity: 1;
+}
+
+/* Ensure code blocks have proper positioning for the button */
+.codehilite pre {
+    position: relative;
+    padding-top: 2.5em; /* Make room for the button */
+}
+
 // for code copy 
 .copy-button {
     padding: 4px 8px;
