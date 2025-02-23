@@ -15,8 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
         wrapper.appendChild(el);
     });
 
-// add a copy-button in code sections
-document.addEventListener('DOMContentLoaded', function() {
     // Add copy button to all highlight/codehilite blocks
     document.querySelectorAll('.codehilite pre').forEach(function(codeBlock) {
         // Create the copy button
