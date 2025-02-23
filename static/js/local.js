@@ -30,9 +30,18 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Add click handler
         copyButton.addEventListener('click', function() {
-            const code = codeBlock.querySelector('code').textContent;
-            navigator.clipboard.writeText(code).then(function() {
+            // Get text content directly from pre element if no code element exists
+            const codeElement = codeBlock.querySelector('code');
+            const textToCopy = codeElement ? codeElement.textContent : codeBlock.textContent;
+            
+            navigator.clipboard.writeText(textToCopy).then(function() {
                 copyButton.textContent = 'Copied!';
+                setTimeout(function() {
+                    copyButton.textContent = 'Copy';
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Failed to copy text: ', err);
+                copyButton.textContent = 'Error!';
                 setTimeout(function() {
                     copyButton.textContent = 'Copy';
                 }, 2000);
