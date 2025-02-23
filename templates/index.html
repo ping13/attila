@@ -73,7 +73,8 @@
       {% endif %}
       
       <!--- 3 last featured articles -->
-      {% set featured_articles = (articles|selectattr('category', 'equalto', 'feature')|sort(attribute='date'))  %}
+      {% set featured_articles = (articles|selectattr('category', 'equalto',
+      'feature')|sort(attribute='date', reverse=True))  %}
       {% if featured_articles | length > 0 %}
       <article class="post archives">
         <div class="inner">
@@ -113,7 +114,7 @@
       <article class="post archives">
         <div class="inner">
           <section class="post-content">
-            <h2 class="archive-title">Recent ⤴︎ quick tips</h2>
+            <h2 class="archive-title">⤴︎ Quick Tips</h2>
             
             <ul>
               {% for article in (recent_tips|list)[:5] %}

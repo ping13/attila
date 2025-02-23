@@ -3394,3 +3394,18 @@ button,input,select,textarea {
 .archive-description a {
     color: var(--color-primary);
 }
+
+// for code copy 
+.copy-button {
+    padding: 4px 8px;
+    margin: 5px;
+    background: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
+.copy-button:hover {
+    background: #e1e1e1;
+}
