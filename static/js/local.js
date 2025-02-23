@@ -26,33 +26,34 @@ document.addEventListener('DOMContentLoaded', function() {
         codeBlocks.forEach(function(codeBlock) {
             try {
                 /* Create the copy button */
-                const copyButton = document.createElement('button');
-                copyButton.className = 'copy-button';
-                copyButton.textContent = 'Copy';
+                const copyDiv = document.createElement('div');
+                copyDiv.className = 'copy-button';
+                copyDiv.textContent = 'Copy';
                 
-                /* Position the button */
+                /* Position the div */
                 codeBlock.style.position = 'relative';
-                copyButton.style.position = 'absolute';
-                copyButton.style.right = '0';
-                copyButton.style.top = '0';
+                copyDiv.style.position = 'absolute';
+                copyDiv.style.right = '0';
+                copyDiv.style.top = '0';
+                copyDiv.style.cursor = 'pointer';
                 
                 /* Add click handler */
-                copyButton.addEventListener('click', function() {
+                copyDiv.addEventListener('click', function() {
                     try {
                         /* Get text content directly from pre element if no code element exists */
                         const codeElement = codeBlock.querySelector('code');
                         const textToCopy = codeElement ? codeElement.textContent : codeBlock.textContent;
                         
                         navigator.clipboard.writeText(textToCopy).then(function() {
-                            copyButton.textContent = 'Copied!';
+                            copyDiv.textContent = 'Copied!';
                             setTimeout(function() {
-                                copyButton.textContent = 'Copy';
+                                copyDiv.textContent = 'Copy';
                             }, 2000);
                         }).catch(function(err) {
                             console.error('Failed to copy text: ', err);
-                            copyButton.textContent = 'Error!';
+                            copyDiv.textContent = 'Error!';
                             setTimeout(function() {
-                                copyButton.textContent = 'Copy';
+                                copyDiv.textContent = 'Copy';
                             }, 2000);
                         });
                     } catch (err) {
@@ -60,8 +61,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
                 
-                /* Add button to the code block */
-                codeBlock.appendChild(copyButton);
+                /* Add div to the code block */
+                codeBlock.appendChild(copyDiv);
             } catch (err) {
                 console.error('Error setting up copy button:', err);
             }
