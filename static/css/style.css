@@ -3279,7 +3279,14 @@ button,input,select,textarea {
 
 /* fancybox customizations */
 .fancybox__caption {
-  font-size: 18px;
+    font-size: 18px;
+    margin-left: 20px !important;
+    margin-right: 20px !important;
+}
+
+.fancybox__caption a{
+    font-size: 18px;
+    color: white;
 }
 
 /* draft banner for articles */

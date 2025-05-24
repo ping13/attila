@@ -1,14 +1,18 @@
 {% macro fancybox(src, id='image', title='') -%}
-<a href="{{ src }}" data-fancybox="{{ id }}" data-caption="{{ title }}">
-  <img src="{{ src }}" />
-</a>
+  {% set img_src = src %}
+  {% if src.endswith('.mp4') %}
+    {% set img_src = src[:-4] + '.png' %}
+  {% endif %}
+  <a href="{{ src }}" data-fancybox="{{ id }}" data-caption="{{ title|e }}">
+    <img src="{{ img_src }}" style="display: block; margin: auto;"/>
+  </a>
 {%- endmacro %}
 
-
 {% macro fancyboxes(images, id='image', gap='20px', justify='center') -%}
-<div style="display: flex; gap: {{ gap }}; justify-content: {{ justify }}; width: 100%; max-width: 1200px; margin: 0 auto;">
+<div style="display: flex; gap: {{ gap }}; justify-content: {{ justify }};
+            width: 100%; max-width: 1200px; margin-top: 1em; margin-bottom: 1em !important;"  >
   {% for image in images %}
-    <a href="{{ image[0] }}" data-fancybox="{{ id }}" data-caption="{{ image[1] }}" style="flex: 1; display: flex;">
+    <a href="{{ image[0] }}" data-fancybox="{{ id }}" data-caption="{{ image[1]|e }}" style="flex: 1; display: flex;">
       <img src="{{ image[0] }}" style="max-width: 100%; height: auto; object-fit: contain;" />
     </a>
   {% endfor %}
