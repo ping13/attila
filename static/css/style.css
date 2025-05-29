@@ -598,8 +598,10 @@ button,input,select,textarea {
 }
 
 .post-content li {
-    position: relative
+    position: relative;
+    margin-bottom: 0.2em;
 }
+
 
 .post-content ol>li:before,.post-content ul>li:before {
     position: absolute;
