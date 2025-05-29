@@ -4,7 +4,6 @@
 
 
 <!-- 2025-01-05: I don't want a header image on the archive page -->
-{#
 {% if HEADER_COVER %}
   {% if HEADER_COVER|lower|truncate(4, True, '') == "http" %}
     {% set selected_cover = HEADER_COVER %}
@@ -24,7 +23,6 @@
 {% elif HEADER_COLOR %}
   {% set selected_color = HEADER_COLOR %}
 {% endif %}
-#}
 
 {% block canonical_url %}<link href="{{ SITEURL }}/{{ARCHIVES_URL}}" rel="canonical" />{% endblock canonical_url %}
 
