@@ -3,14 +3,42 @@
   {% if src.endswith('.mp4') %}
     {% set img_src = src[:-4] + '.png' %}
   {% endif %}
+<div style="margin-top: 1em; margin-bottom: 1.5em !important;"  >
   <a href="{{ src }}" data-fancybox="{{ id }}" data-caption="{{ title|e }}">
+  {% if src.endswith('.mp4') %}
+   <div style="position: relative; display: block;">
+     <img src="{{ img_src }}" style="display: block; margin: auto;">
+     <div style="
+       position: absolute;
+       top: 50%;
+       left: 50%;
+       transform: translate(-50%, -50%);
+       width: 80px;
+       height: 80px;
+       background: rgba(0,0,0,0.4);
+       border-radius: 50%;
+       display: flex;
+       align-items: center;
+       justify-content: center;">
+       <div style="
+         width: 0; 
+         height: 0; 
+         border-left: 25px solid white; 
+         border-top: 15px solid transparent; 
+         border-bottom: 15px solid transparent;">
+       </div>
+     </div>
+   </div>
+  {% else %}
     <img src="{{ img_src }}" style="display: block; margin: auto;"/>
+  {% endif %}
   </a>
+</div>
 {%- endmacro %}
 
 {% macro fancyboxes(images, id='image', gap='20px', justify='center') -%}
 <div style="display: flex; gap: {{ gap }}; justify-content: {{ justify }};
-            width: 100%; max-width: 1200px; margin-top: 1em; margin-bottom: 1em !important;"  >
+            width: 100%; max-width: 1200px; margin-top: 1em; margin-bottom: 1.5em !important;"  >
   {% for image in images %}
     <a href="{{ image[0] }}" data-fancybox="{{ id }}" data-caption="{{ image[1]|e }}" style="flex: 1; display: flex;">
       <img src="{{ image[0] }}" style="max-width: 100%; height: auto; object-fit: contain;" />
