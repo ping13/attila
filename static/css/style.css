@@ -2368,8 +2368,8 @@ button,input,select,textarea {
     left: 0;
     bottom: 0;
     z-index: 8;
-    background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.333) 100%);
-    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.333) 100%)
+    background: -webkit-linear-gradient(top, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.666) 100%);
+    background: linear-gradient(to bottom, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.666) 100%)
 }
 
 .post {
@@ -2429,8 +2429,15 @@ button,input,select,textarea {
     color: var(--color-content-lead)
 }
 
+.post-header .post-title {
+    margin: 0 0 4rem;
+    font-size: 5em;
+    line-height: 1.25em
+}
+
 @media only screen and (max-width: 480px) {
-    .post-title {
+    .post-header .post-title {
+        font-size: 3em;
         -webkit-hyphens:auto;
         hyphens: auto
     }
@@ -2442,11 +2449,6 @@ button,input,select,textarea {
     font-weight: inherit
 }
 
-.post-header .post-title {
-    margin: 0 0 4rem;
-    font-size: 6em;
-    line-height: 1.25em
-}
 
 .has-cover .post-title {
     color: white
@@ -3444,3 +3446,5 @@ button,input,select,textarea {
 .copy-button:hover {
     background: #e1e1e1;
 }
+
+
