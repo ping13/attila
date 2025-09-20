@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ SITENAME }} - Tag {{ tag }}{% endblock %}
+{% block title %}{{ SITENAME }} - {{ tag }}{% endblock %}
 
 {# <!-- Choosing cover image --> #}
 
@@ -52,7 +52,6 @@
       <div class="inner">
         <div class="archive archive-tag box archive-box">
           <span class="archive-info">
-            <span class="archive-type">{{"Tag"}}</span>
             <span class="archive-count">
             {% if articles|count == 1 %}
             {{ articles|count }} Post

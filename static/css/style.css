@@ -1286,6 +1286,22 @@ button,input,select,textarea {
     padding-bottom: calc(8rem + 4vw)
 }
 
+/* Put the text above the overlay */
+.blog-header .archive {
+    position: relative; color: #fff;
+  text-shadow: 0 2px 8px rgba(0,0,0,.6);
+}
+
+.blog-header.has-cover .archive a {
+    font-weight: bold;
+    color: darkgrey;
+    text-decoration: underline;  /* keeps it distinguishable */
+}
+
+.blog-header.has-cover .archive a:hover {
+  color: #fff;                 /* or a lighter shade */
+}
+
 .blog-cover {
     position: absolute;
     width: 100%;
@@ -1371,21 +1387,6 @@ button,input,select,textarea {
     color: var(--color-primary)
 }
 
-.archive .archive-info .archive-count {
-    position: relative;
-    margin-left: 3.5rem;
-    color: var(--color-content-secondary)
-}
-
-.archive .archive-info .archive-count:after {
-    content: '';
-    position: absolute;
-    left: -2.5rem;
-    top: 50%;
-    width: 1.5rem;
-    height: 2px;
-    background: var(--color-background-contrast)
-}
 
 .archive .archive-title {
     font-size: 4em;
