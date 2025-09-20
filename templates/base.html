@@ -73,7 +73,7 @@
   {% endif %}
   {% endfor %}
 
-  <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/css/style.css">
+  <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/css/style.css?v={{ style_css_hash|default('dev') }}">
   <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/css/code.css">
   <link
     rel="stylesheet"
@@ -153,7 +153,6 @@
   {% endif %}
 
   {% endblock head %}
-
 </head>
 
 {% if body_class %}
