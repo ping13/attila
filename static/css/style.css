@@ -829,6 +829,29 @@ button,input,select,textarea {
     margin: 0 0 1rem
 }
 
+.post-excerpt *,
+.post-excerpt div {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.post-excerpt div {
+    overflow: hidden;
+}
+
+.loop-post-cover {
+    margin: 1.5rem 0 0 0;
+    text-align: center;
+}
+
+.loop-post-cover img {
+  display: block;
+  max-width: 60%;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 4px;
+}
+
 .post-content .fluid-width-video-wrapper {
     margin: 0 0 1rem
 }

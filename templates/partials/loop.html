@@ -42,6 +42,18 @@
                     {% elif article.summary %}
                         {{ article.summary|striptags|truncate(400) }}
                     {% endif %}
+                    {% if article.cover %}
+                        {% if article.cover|lower|truncate(4, True, '') == "http" %}
+                            {% set article_cover = article.cover %}
+                        {% elif article.cover.startswith('/') %}
+                            {% set article_cover = SITEURL+article.cover %}
+                        {% else %}
+                            {% set article_cover = SITEURL+"/"+article.cover %}
+                        {% endif %}
+                        <div class="loop-post-cover">
+                                <a href="{{ SITEURL }}/{{ article.url }}"><img src="{{ article_cover }}" alt="{{ article.title|striptags }}" /></a>
+                        </div>
+                    {% endif %}
                 </p>
             {% endif %}
 
