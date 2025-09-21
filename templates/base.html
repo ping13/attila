@@ -92,7 +92,7 @@
     {% set css = SITEURL+"/"+css %}
   {% endif %}
 
-  <link href="{{ css }}" type="text/css" rel="stylesheet" />
+  <link href="{{ css }}?v={{ override_css_hash|default('dev') }}" type="text/css" rel="stylesheet" />
   {% endfor %}
   {% endif %}
 
