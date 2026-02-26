@@ -108,25 +108,6 @@
           </section>
         </div>
       </article>
-
-      <!--- 5 most recent quick typs -->
-      {% set recent_tips = (articles|selectattr('category', 'equalto',
-      'quick tip')|sort(attribute='date', reverse=True)) %}
-      <article class="post archives">
-        <div class="inner">
-          <section class="post-content">
-            <h2 class="archive-title">⤴︎ Quick Tips</h2>
-            
-            <ul>
-              {% for article in (recent_tips|list)[:5] %}
-              <li><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></li>
-              {% endfor %}
-            </ul>
-          </section>
-        </div>
-      </article>
-      
-
       <!--- subscribe -->
       {% set subscribepage = pages | selectattr('slug', 'equalto', 'subscribe') | first %}
       {% if subscribepage %}
