@@ -1,5 +1,20 @@
 {% extends "base.html" %}
 
+{# skip base.html's fallback, which treats unknown pages as Home #}
+{% set body_class = 'page-template' %}
+{% set current_url = '/search/' %}
+
+{% set cover = HEADER_COVER or HOME_COVER %}
+{% if cover %}
+  {% if cover|lower|truncate(4, True, '') == "http" %}
+    {% set selected_cover = cover %}
+  {% elif cover.startswith('/') %}
+    {% set selected_cover = SITEURL+cover %}
+  {% else %}
+    {% set selected_cover = SITEURL+"/"+cover %}
+  {% endif %}
+{% endif %}
+
 {% block title %}Search · {{ SITENAME }}{% endblock title %}
 
 {% block canonical_url %}
@@ -13,9 +28,14 @@
 {% endblock head %}
 
 {% block header %}
-    <header class="post-header">
+    <header class="post-header {% if selected_cover %}has-cover{% endif %}">
       <div class="inner">
         <h1 class="post-title">Search</h1>
+        {% if selected_cover %}
+          <div class="post-cover cover">
+            <img src="{{ selected_cover }}" alt="Search" />
+          </div>
+        {% endif %}
       </div>
     </header>
 {% endblock header %}
@@ -43,7 +63,14 @@
       element: '#search',
       showSubResults: true,
       showImages: false,
-      autofocus: true
+      autofocus: true,
+      // keep ?q= in sync so the current search can be shared as a link
+      processTerm: function (term) {
+        var url = new URL(window.location);
+        if (term) { url.searchParams.set('q', term); } else { url.searchParams.delete('q'); }
+        history.replaceState(null, '', url);
+        return term;
+      }
     });
     var q = new URLSearchParams(window.location.search).get('q');
     if (q) { ui.triggerSearch(q); }
