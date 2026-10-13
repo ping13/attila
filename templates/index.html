@@ -67,7 +67,8 @@
       {% if aboutpage %}
       <div class="inner">
         <section class="post-content">
-        {{aboutpage.content}}
+        {{ aboutpage.content.split('</p>')[0] }}</p>
+        <p><a href="{{ SITEURL }}/{{ aboutpage.url }}">More about me &rarr;</a></p>
         </section>
       </div>
       {% endif %}

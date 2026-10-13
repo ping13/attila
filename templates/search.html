@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Search · {{ SITENAME }}{% endblock title %}
+
+{% block canonical_url %}
+<link href="{{ SITEURL }}/search/" rel="canonical" />
+{% endblock canonical_url %}
+
+{% block head %}
+  {{ super() }}
+  <meta name="robots" content="noindex" />
+  <link href="{{ SITEURL }}/pagefind/pagefind-ui.css" rel="stylesheet" />
+{% endblock head %}
+
+{% block header %}
+    <header class="post-header">
+      <div class="inner">
+        <h1 class="post-title">Search</h1>
+      </div>
+    </header>
+{% endblock header %}
+
+{% block content %}
+  <main class="content" role="main">
+    <article class="post">
+      <div class="inner">
+        {# not inside .post-content: its input styles override Pagefind's #}
+        <section class="search-page">
+          <div id="search"></div>
+          <noscript>Search needs JavaScript. You can also browse the <a href="{{ SITEURL }}/archive/">archive</a>.</noscript>
+        </section>
+      </div>
+    </article>
+  </main>
+{% endblock content %}
+
+{% block scripts %}
+{{ super() }}
+<script src="{{ SITEURL }}/pagefind/pagefind-ui.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', function () {
+    var ui = new PagefindUI({
+      element: '#search',
+      showSubResults: true,
+      showImages: false,
+      autofocus: true
+    });
+    var q = new URLSearchParams(window.location.search).get('q');
+    if (q) { ui.triggerSearch(q); }
+  });
+</script>
+{% endblock scripts %}
