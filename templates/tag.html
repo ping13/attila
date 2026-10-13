@@ -1,16 +1,19 @@
 {% extends "base.html" %}
 
-{% block title %}{{ SITENAME }} - {{ tag }}{% endblock %}
+{% block title %}{{ SITENAME }} - {{ tag_title }}{% endblock %}
 
 {# <!-- Choosing cover image --> #}
 
 
 {% set tag_cover = None %}
 {% set tag_description = None %}
+{# display name: TAG_META title (e.g. "AI"), else the title-cased tag #}
+{% set tag_title = tag.name | title %}
 {% if TAG_META and TAG_META[tag.name.lower()] %}
   {% set tag_cover = TAG_META[tag.name.lower()].cover %}
   {% set tag_color = TAG_META[tag.name.lower()].color %}
   {% set tag_description = TAG_META[tag.name.lower()].description %}
+  {% set tag_title = TAG_META[tag.name.lower()].title or tag_title %}
 {% endif %}
 
 {% if tag_cover %}
@@ -60,7 +63,7 @@
             {% endif %}
             </span>
           </span>
-          <h2 class="archive-title">{{tag.name | title}}</h2>
+          <h2 class="archive-title">{{ tag_title }}</h2>
           {% if tag_description %}
             <span class="archive-description">{{tag_description}}</span>
           {% endif %}
