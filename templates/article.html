@@ -119,11 +119,14 @@
           {% endif %}
           {% if article.stats and 'read_mins' in article.stats %}
           &bull; {{ article.stats['read_mins'] }} min read
+          {% else %}
+          {# no post_stats plugin: estimate at 230 words per minute #}
+          &bull; {{ ((article.content|striptags|wordcount) / 230)|round(0, 'ceil')|int }} min read
           {% endif %}
         </div>
         {% if selected_cover %}
           <div class="post-cover cover">
-            {% if "image_process" is plugin_enabled %}
+            {% if "image_process" is plugin_enabled and (not selected_cover.startswith('http') or (SITEURL and selected_cover.startswith(SITEURL))) %}{# remote covers can't be resized #}
               <img class="image-process-large-photo" src="{{ selected_cover }}" alt="{{ current_title }}" />
             {% else %}
               <img src="{{ selected_cover }}" alt="{{ current_title }}" />
@@ -141,7 +144,7 @@
     <main class="content" role="main">
         <article class="post">
         <div class="inner">
-          <section class="post-content"{% if article.status == 'published' %} data-pagefind-body data-pagefind-meta="date:{{ article.date.strftime('%Y-%m-%d') }}"{% endif %}>
+          <section class="post-content"{% if article.status == 'published' %} data-pagefind-body data-pagefind-meta="date:{{ article.locale_date }}"{% endif %}>
             {{article.content}}
           </section>
 
@@ -272,13 +275,16 @@
         </div>
         </article>
 
-        <!--- subscribe -->
+        <!--- subscribe: a link only, so the form's hCaptcha loads just on Home and the subscribe page -->
         {% set subscribepage = pages | selectattr('slug', 'equalto', 'subscribe') | first %}
         {% if subscribepage %}
         <article class="post archives">
           <div class="inner">
             <section class="post-content">
-              {{subscribepage.content}}
+              <p class="subscribe-cta">
+                <i class="icon icon-mail" aria-hidden="true"></i>
+                Liked this? <a href="{{ SITEURL }}/{{ subscribepage.url }}">Get new posts by email or RSS →</a>
+              </p>
             </section>
           </div>
         </article>

@@ -73,6 +73,8 @@
   {% endif %}
   {% endfor %}
 
+  <link rel="preload" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/font/libre-baskerville-latin-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/font/fira-sans-v8-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/css/style.css?v={{ style_css_hash|default('dev') }}">
   <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/css/code.css">
   <link
@@ -96,18 +98,6 @@
   {% endfor %}
   {% endif %}
 
-  {% if ALLOW_GOOGLE_FONTS|default(True) %}
-  <!-- Custom fonts -->
-  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
-  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
-  {% endif %}
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-  <![endif]-->
 
   <script>
     var siteUrl = '{{ SITEURL }}';
@@ -160,7 +150,8 @@
 
 {% else %}
   {% set body_class='home-template' %}
-  {% set current_url='/' %}
+  {# template pages (favorites, search, …) highlight their own menu entry, not Home #}
+  {% set current_url='/' + (output_file|default('index.html'))|replace('index.html', '') %}
   {% set current_title=SITENAME %}
 
   {% if article %}
@@ -263,7 +254,7 @@
   {% else %}
     {% set js = SITEURL+"/"+js %}
   {% endif %}
-  <script type="text/javascript" src="{{ js }}"></script>
+  <script type="text/javascript" src="{{ js }}?v={{ override_js_hash|default('dev') }}"></script>
   {% endfor %}
   {% endif %}
   {% include 'partials/analytics.js' %}

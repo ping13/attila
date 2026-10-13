@@ -41,7 +41,7 @@
         <h1 class="post-title">{{ current_display_title }}</h1>
         {% if selected_cover %}
           <div class="post-cover cover">
-            {% if "image_process" is plugin_enabled %}
+            {% if "image_process" is plugin_enabled and (not selected_cover.startswith('http') or (SITEURL and selected_cover.startswith(SITEURL))) %}{# remote covers can't be resized #}
               <img class="image-process-large-photo" src="{{ selected_cover }}" alt="{{ current_title }}" />
             {% else %}
               <img src="{{ selected_cover }}" alt="{{ current_title }}" />
@@ -61,7 +61,16 @@
         <dl>
         {% for article in dates %}
           <dt>{{ article.locale_date }}</dt>
-          <dd><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></dd>
+          <dd>
+            <a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a>
+            {% if article.tags %}
+            <span class="archive-tags">
+              {% for tag in article.tags|sort(attribute='name') %}
+              <a class="archive-tag" href="{{ SITEURL }}/{{ tag.url }}">{{ tag.name }}</a>
+              {% endfor %}
+            </span>
+            {% endif %}
+          </dd>
         {% endfor %}
         </dl>
       </section>

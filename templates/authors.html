@@ -39,7 +39,7 @@
         <h1 class="post-title">{{ current_display_title }}</h1>
         {% if selected_cover %}
           <div class="post-cover cover">
-            {% if "image_process" is plugin_enabled %}
+            {% if "image_process" is plugin_enabled and (not selected_cover.startswith('http') or (SITEURL and selected_cover.startswith(SITEURL))) %}{# remote covers can't be resized #}
               <img class="image-process-large-photo" src="{{ selected_cover }}" alt="{{ current_title }}" />
             {% else %}
               <img src="{{ selected_cover }}" alt="{{ current_title }}" />

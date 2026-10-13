@@ -1,7 +1,7 @@
 <ul>
 
   {% for title, link in MENUITEMS %}
-    <li class="nav-{{title}} {%if current_url == link %}active{% endif %}" role="presentation"><a href="{{ link }}"><span>{{ title }}</span></a></li>
+    <li class="nav-{{title}} {% if current_url is defined and current_url.strip('/') == link.strip('/') %}active{% endif %}" role="presentation"><a href="{{ link }}"><span>{{ title }}</span></a></li>
   {% endfor %}
 
   {% if SHOW_PAGES_ON_MENU | default(True) %}

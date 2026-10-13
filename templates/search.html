@@ -1,9 +1,5 @@
 {% extends "base.html" %}
 
-{# skip base.html's fallback, which treats unknown pages as Home #}
-{% set body_class = 'page-template' %}
-{% set current_url = '/search/' %}
-
 {% set cover = HEADER_COVER or HOME_COVER %}
 {% if cover %}
   {% if cover|lower|truncate(4, True, '') == "http" %}
@@ -24,7 +20,6 @@
 {% block head %}
   {{ super() }}
   <meta name="robots" content="noindex" />
-  <link href="{{ SITEURL }}/pagefind/pagefind-ui.css" rel="stylesheet" />
 {% endblock head %}
 
 {% block header %}
@@ -42,12 +37,18 @@
 
 {% block content %}
   <main class="content" role="main">
-    <article class="post">
+    {# same markup as archives.html, so results pick up the archive styling #}
+    <article class="post archives search-page">
       <div class="inner">
-        {# not inside .post-content: its input styles override Pagefind's #}
-        <section class="search-page">
-          <div id="search"></div>
-          <noscript>Search needs JavaScript. You can also browse the <a href="{{ SITEURL }}/archive/">archive</a>.</noscript>
+        <section class="post-content">
+          <form role="search" id="search-form">
+            <input type="search" id="search-input" name="q" placeholder="Search articles…"
+                   aria-label="Search articles" autocomplete="off" autofocus />
+          </form>
+          <p id="search-status" class="search-status" aria-live="polite"></p>
+          <dl id="search-results"></dl>
+          <button type="button" id="search-more" class="search-more" hidden>Load more results</button>
+          <noscript>Search needs JavaScript. You can also browse <a href="{{ SITEURL }}/{{ ARCHIVES_URL }}">all articles</a>.</noscript>
         </section>
       </div>
     </article>
@@ -56,24 +57,84 @@
 
 {% block scripts %}
 {{ super() }}
-<script src="{{ SITEURL }}/pagefind/pagefind-ui.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    var ui = new PagefindUI({
-      element: '#search',
-      showSubResults: true,
-      showImages: false,
-      autofocus: true,
-      // keep ?q= in sync so the current search can be shared as a link
-      processTerm: function (term) {
-        var url = new URL(window.location);
-        if (term) { url.searchParams.set('q', term); } else { url.searchParams.delete('q'); }
-        history.replaceState(null, '', url);
-        return term;
-      }
-    });
-    var q = new URLSearchParams(window.location.search).get('q');
-    if (q) { ui.triggerSearch(q); }
-  });
+<script type="module">
+  const pagefind = await import('{{ SITEURL }}/pagefind/pagefind.js');
+  await pagefind.options({ excerptLength: 30 });
+  pagefind.init();
+
+  const PAGE_SIZE = 10;
+  const MAX_SUB_RESULTS = 3;
+  const form = document.getElementById('search-form');
+  const input = document.getElementById('search-input');
+  const status = document.getElementById('search-status');
+  const list = document.getElementById('search-results');
+  const more = document.getElementById('search-more');
+  let pending = [];
+
+  const el = (tag, props = {}, children = []) => {
+    const node = Object.assign(document.createElement(tag), props);
+    node.append(...children);
+    return node;
+  };
+
+  // Pagefind excerpts are already HTML-escaped, with <mark> around the matches
+  const excerpt = (html) => el('p', { className: 'search-excerpt', innerHTML: html });
+
+  function renderResult(data) {
+    const dt = el('dt', { textContent: data.meta.date || 'Page' });
+    const dd = el('dd', {}, [
+      el('a', { href: data.url, textContent: data.meta.title }),
+      excerpt(data.excerpt),
+    ]);
+    // section matches, as Pagefind's default UI showed them (anchored sections only)
+    const subs = (data.sub_results || []).filter((s) => s.url.includes('#')).slice(0, MAX_SUB_RESULTS);
+    if (subs.length) {
+      dd.append(el('ul', { className: 'search-sections' }, subs.map((s) =>
+        el('li', {}, [el('a', { href: s.url, textContent: s.title }), excerpt(s.excerpt)]))));
+    }
+    list.append(dt, dd);
+  }
+
+  async function showMore() {
+    const batch = pending.splice(0, PAGE_SIZE);
+    (await Promise.all(batch.map((r) => r.data()))).forEach(renderResult);
+    more.hidden = pending.length === 0;
+  }
+
+  function setStatus(term, count) {
+    status.replaceChildren();
+    if (!term) return;
+    if (count) {
+      status.append(`${count} result${count === 1 ? '' : 's'} for “${term}”`);
+    } else {
+      status.append(`No results for “${term}”. Browse `,
+        el('a', { href: '{{ SITEURL }}/{{ ARCHIVES_URL }}', textContent: 'all articles' }),
+        ' or ',
+        el('a', { href: '{{ SITEURL }}/{{ TAGS_URL }}', textContent: 'all tags' }),
+        ' instead.');
+    }
+  }
+
+  async function search(term) {
+    term = term.trim();
+    // keep ?q= in sync so the current search can be shared as a link
+    const url = new URL(window.location);
+    term ? url.searchParams.set('q', term) : url.searchParams.delete('q');
+    history.replaceState(null, '', url);
+
+    const result = term ? await pagefind.debouncedSearch(term, {}, 250) : { results: [] };
+    if (result === null) return; // superseded by a newer keystroke
+    list.replaceChildren();
+    pending = result.results.slice();
+    setStatus(term, pending.length);
+    await showMore();
+  }
+
+  input.addEventListener('input', () => search(input.value));
+  more.addEventListener('click', showMore);
+  form.addEventListener('submit', (e) => { e.preventDefault(); input.blur(); });
+
+  const q = new URLSearchParams(window.location.search).get('q');
+  if (q) { input.value = q; search(q); }
 </script>
 {% endblock scripts %}

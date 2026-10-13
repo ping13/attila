@@ -28,98 +28,130 @@
   {% set selected_color = HOME_COLOR %}
 {% endif %}
 
-{% block header %}
-    <!-- Page Header -->
-    <!-- Set your background image for this header on the line below. -->
-    <header class="blog-header {% if selected_cover or selected_color %} has-cover {% endif %}">
-      <div class="inner">
-        <div class="box blog-box">
-          <h1 class="blog-name">{{ SITENAME }}</h1>
-          {% if SITESUBTITLE %}
-          <span class="blog-description">{{ SITESUBTITLE }}</span>
-          {% endif %}
-        </div>
+{# resolve an image path from metadata/settings to a URL #}
+{% macro img_url(path) -%}
+  {%- if path|lower|truncate(4, True, '') == "http" -%}{{ path }}
+  {%- elif path.startswith('/') -%}{{ SITEURL }}{{ path }}
+  {%- else -%}{{ SITEURL }}/{{ path }}{%- endif -%}
+{%- endmacro %}
 
+{% block header %}
+    <!-- Page Header: a short photo banner; the intro below carries the name -->
+    <header class="blog-header home-banner {% if selected_cover or selected_color %} has-cover {% endif %}">
+      <div class="inner"></div>
         {% if selected_cover %}
           <div class="blog-cover cover">
-            {% if "image_process" is plugin_enabled %}
-              <img class="image-process-large-photo" src="{{ selected_cover }}" alt="{{ current_title }}" />
+            {% if "image_process" is plugin_enabled and (not selected_cover.startswith('http') or (SITEURL and selected_cover.startswith(SITEURL))) %}{# remote covers can't be resized #}
+              <img class="image-process-large-photo" src="{{ selected_cover }}" alt="" />
             {% else %}
-              <img src="{{ selected_cover }}" alt="{{ current_title }}" />
+              <img src="{{ selected_cover }}" alt="" />
             {% endif %}
           </div>
         {% elif selected_color %}
-          <div class="blog-cover cover" style="background-color: {{ selected_color }}">
+          <div class="blog-cover cover" style="background-color: {{ selected_color }}"></div>
         {% endif %}
-      </div>
     </header>
-
 {% endblock header %}
 
 {% block content %}
 
-<div id="index" class="container">
+<div id="index" class="container home-hub">
   <main class="content" role="main">
-    <article class="post archives">
-      
-      <!--- Intro -->
-      {% set aboutpage = pages | selectattr('slug', 'equalto', 'about') | first %}
-      {% if aboutpage %}
+
+    <!--- Intro -->
+    {% set author_meta = AUTHOR_META.get('stephan', {}) if AUTHOR_META else {} %}
+    {% set aboutpage = pages | selectattr('slug', 'equalto', 'about') | first %}
+    {% set subscribepage = pages | selectattr('slug', 'equalto', 'subscribe') | first %}
+    <section class="inner hub-intro">
+      {% set avatar = HOME_AVATAR or author_meta.image %}
+      {% if avatar %}
+      <img class="hub-avatar image-process-avatar" src="{{ img_url(avatar) }}" alt="Portrait of {{ AUTHOR }}" />
+      {% endif %}
+      <div class="hub-intro-text">
+        <h1 class="hub-name">{{ SITENAME }}</h1>
+        {% if HOME_INTRO %}<p class="hub-bio">{{ HOME_INTRO }}</p>{% endif %}
+        <p class="hub-links">
+          {% if aboutpage %}<a href="{{ SITEURL }}/{{ aboutpage.url }}">About me</a>{% endif %}
+          <a href="{{ SITEURL }}/tag/topoprint/">Topoprint</a>
+          {% if subscribepage %}<a href="{{ SITEURL }}/{{ subscribepage.url }}">Subscribe</a>{% endif %}
+        </p>
+      </div>
+    </section>
+
+    <!--- 3 last featured articles, as cards -->
+    {% set featured_articles = (articles|selectattr('category', 'equalto',
+    'feature')|sort(attribute='date', reverse=True)|list)[:3] %}
+    {% if featured_articles %}
+    <section class="inner hub-section">
+      <h2 class="hub-heading">Featured</h2>
+      <div class="hub-cards">
+        {% for article in featured_articles %}
+        {% set card_image = article.cover or article.og_image %}
+        <a class="hub-card" href="{{ SITEURL }}/{{ article.url }}">
+          {% if card_image %}
+          <img class="hub-card-image{% if not card_image.startswith('http') %} image-process-card{% endif %}" src="{{ img_url(card_image) }}" alt="" loading="lazy" decoding="async" />
+          {% else %}
+          <span class="hub-card-image hub-card-placeholder" aria-hidden="true"></span>
+          {% endif %}
+          <span class="hub-card-body">
+            <time class="hub-card-date" datetime="{{ article.date.isoformat() }}">{{ article.locale_date }}</time>
+            <span class="hub-card-title">{{ article.title }}</span>
+            <span class="hub-card-summary">{{ article.summary|striptags|truncate(140) }}</span>
+          </span>
+        </a>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <!--- 5 most recent articles, archive style -->
+    {% set recent_articles = (articles|rejectattr('category', 'equalto',
+    'quick tip')|rejectattr('category', 'equalto', 'feature')|sort(attribute='date', reverse=True)|list)[:5] %}
+    <article class="post archives hub-recent">
       <div class="inner">
         <section class="post-content">
-        {{ aboutpage.content.split('</p>')[0] }}</p>
-        <p><a href="{{ SITEURL }}/{{ aboutpage.url }}">More about me &rarr;</a></p>
+          <h2 class="hub-heading">Recent articles</h2>
+          <dl>
+            {% for article in recent_articles %}
+            <dt>{{ article.locale_date }}</dt>
+            <dd>
+              <a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a>
+              <span class="hub-recent-summary">{{ article.summary|striptags|truncate(110) }}</span>
+            </dd>
+            {% endfor %}
+          </dl>
+          <p class="hub-more"><a href="{{ SITEURL }}/{{ ARCHIVES_URL }}">All articles →</a></p>
         </section>
       </div>
-      {% endif %}
-      
-      <!--- 3 last featured articles -->
-      {% set featured_articles = (articles|selectattr('category', 'equalto',
-      'feature')|sort(attribute='date', reverse=True))  %}
-      {% if featured_articles | length > 0 %}
-      <article class="post archives">
-        <div class="inner">
-          <section class="post-content">
-            <h2 class="archive-title">Featured Articles</h2>
-            <ul>
-              {% for article in (featured_articles|list)[:3] %}
-              <li><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></li>
-              {% endfor %}
-            </ul>
-          </section>
-        </div>
-      </article>        
-      {% endif %}
+    </article>
 
-      
-      <!--- 5 most recent articles -->
-      {% set recent_articles = (articles|rejectattr('category', 'equalto',
-      'quick tip')|rejectattr('category', 'equalto', 'feature')|sort(attribute='date', reverse=True)) %}
-      <article class="post archives">
-        <div class="inner">
-          <section class="post-content">
-            <h2 class="archive-title">Recent articles</h2>
-            
-            <ul>
-              {% for article in (recent_articles|list)[:5] %}
-              <li><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></li>
-              {% endfor %}
-            </ul>
-            <p><a href="{{ SITEURL }}/archive">More articles →</a></p>
-          </section>
+    <!--- Topoprint -->
+    {% set topoprint = (TAG_META or {}).get('topoprint') %}
+    {% if topoprint %}
+    <section class="inner hub-section">
+      <div class="hub-strip">
+        {% if topoprint.cover %}
+        <img class="hub-strip-image image-process-card" src="{{ img_url(topoprint.cover) }}" alt="A Topodisc of the Landwasser Viaduct" loading="lazy" decoding="async" />
+        {% endif %}
+        <div class="hub-strip-text">
+          <h2 class="hub-heading">Topoprint</h2>
+          <p>{{ topoprint.description }}</p>
+          <p class="hub-more"><a href="{{ SITEURL }}/tag/topoprint/">All Topoprint posts →</a></p>
         </div>
-      </article>
-      <!--- subscribe -->
-      {% set subscribepage = pages | selectattr('slug', 'equalto', 'subscribe') | first %}
-      {% if subscribepage %}
-      <article class="post archives">
-        <div class="inner">
-          <section class="post-content">
-            {{subscribepage.content}}
-          </section>
-        </div>
-       </article>
-      {% endif %}
+      </div>
+    </section>
+    {% endif %}
+
+    <!--- subscribe -->
+    {% if subscribepage %}
+    <article class="post archives hub-subscribe">
+      <div class="inner">
+        <section class="post-content">
+          {{subscribepage.content}}
+        </section>
+      </div>
+    </article>
+    {% endif %}
 
   </main>
 </div>
