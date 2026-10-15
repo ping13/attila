@@ -76,11 +76,8 @@
   <link rel="preload" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/font/libre-baskerville-latin-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/font/fira-sans-v8-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/css/style.css?v={{ style_css_hash|default('dev') }}">
-  <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/css/code.css">
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"
-    />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"></noscript>
   
   {% if CSS_OVERRIDE %}
   <!-- CSS specified by the user -->
