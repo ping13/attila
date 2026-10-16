@@ -125,6 +125,23 @@
       </div>
     </article>
 
+    <!--- Print Your Track -->
+    {% set pyt = (TAG_META or {}).get('printyourtrack') %}
+    {% if pyt %}
+    <section class="inner hub-section">
+      <div class="hub-strip hub-strip--wide">
+        {% if pyt.cover %}
+        <img class="hub-strip-image image-process-card" src="{{ img_url(pyt.cover) }}" alt="A terrain model with a route raised across the landscape" loading="lazy" decoding="async" />
+        {% endif %}
+        <div class="hub-strip-text">
+          <h2 class="hub-heading">Print Your Track</h2>
+          <p>{{ pyt.description }}</p>
+          <p class="hub-more"><a href="https://printyourtrack.com" target="_blank" rel="noopener">printyourtrack.com →</a></p>
+        </div>
+      </div>
+    </section>
+    {% endif %}
+
     <!--- Topoprint -->
     {% set topoprint = (TAG_META or {}).get('topoprint') %}
     {% if topoprint %}
