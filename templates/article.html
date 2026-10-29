@@ -72,7 +72,7 @@
     
     <!-- Page Header -->
     <!-- Set your background image for this header on the line below. -->
-    <header class="post-header {% if selected_cover or selected_color %} has-cover {% endif %}">
+    <header class="post-header {% if selected_cover or selected_color %} has-cover {% endif %}{% if article.cover_dim %} cover-dim{% endif %}">
       <div class="inner">
         <span class="post-info">
           <span class="post-type">{{ "Article" }}</span>
